@@ -38,7 +38,7 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
+      className="relative mx-auto max-w-350 px-6 py-12 md:px-16"
     >
       <div className="mb-16">
         <p className="text-sm font-medium uppercase tracking-widest text-primary">

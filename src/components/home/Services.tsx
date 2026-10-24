@@ -42,7 +42,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
+      className="relative mx-auto max-w-350 px-6 py-5 md:px-16"
     >
       <div className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>

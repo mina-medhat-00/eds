@@ -53,7 +53,7 @@ export default function CaseStudies() {
   return (
     <section
       id="case-studies"
-      className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
+      className="relative mx-auto max-w-350 px-6 py-12 md:px-16"
     >
       <div className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
@@ -70,8 +70,6 @@ export default function CaseStudies() {
           Real outcomes for real estate investors.
         </p>
       </div>
-
-      <SignalLine className="mb-2" />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {CASES.map((c) => (

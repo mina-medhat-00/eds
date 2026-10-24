@@ -9,7 +9,7 @@ const STATS = [
 
 export default function Stats() {
   return (
-    <section className="relative mx-auto max-w-350 px-6 py-16 md:px-16">
+    <section className="relative mx-auto max-w-350 px-6 py-6 md:px-16">
       <SignalLine className="mb-12" />
       <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-4">
         {STATS.map((s) => (

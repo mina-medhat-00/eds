@@ -13,7 +13,7 @@ const PULSE = [
 
 export default function Performance() {
   return (
-    <section id="metrics" className="relative overflow-hidden py-24">
+    <section id="metrics" className="relative overflow-hidden py-12">
       <div className="relative mx-auto max-w-350 px-6 md:px-16">
         <div className="mb-16">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">

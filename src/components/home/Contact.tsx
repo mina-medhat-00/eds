@@ -83,7 +83,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
+      className="relative mx-auto max-w-350 px-6 py-12 md:px-16"
     >
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
         <div>
