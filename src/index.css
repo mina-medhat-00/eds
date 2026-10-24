@@ -3,28 +3,26 @@
 
 @layer base {
   :root {
-    /* Apple dark mode palette (apple.com / iOS system colors) */
-    --background: 0 0% 0%; /* #000000 */
-    --foreground: 240 11% 96%; /* #F5F5F7 */
-    --card: 240 3% 11%; /* #1C1C1E */
+    --background: 0 0% 0%;
+    --foreground: 240 11% 96%;
+    --card: 240 3% 11%;
     --card-foreground: 240 11% 96%;
     --popover: 240 3% 11%;
     --popover-foreground: 240 11% 96%;
-    --primary: 211 100% 52%; /* iOS system blue (dark) #0A84FF */
+    --primary: 211 100% 52%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 2% 18%; /* #2C2C2E */
+    --secondary: 240 2% 18%;
     --secondary-foreground: 240 11% 96%;
     --muted: 240 2% 18%;
-    --muted-foreground: 240 2% 54%; /* #86868B */
+    --muted-foreground: 240 2% 54%;
     --accent: 211 100% 52%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 3 100% 61%; /* iOS system red (dark) #FF453A */
+    --destructive: 3 100% 61%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 2% 22%; /* #38383A */
+    --border: 240 2% 22%;
     --input: 240 2% 22%;
     --ring: 211 100% 52%;
     --radius: 1rem;
-    /* SF Pro on Apple devices, Inter (free, Google Fonts) everywhere else */
     --font-sans:
       -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
       "Helvetica Neue", Helvetica, Arial, sans-serif;

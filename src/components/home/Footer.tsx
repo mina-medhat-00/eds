@@ -1,13 +1,15 @@
+import { Link } from "react-router-dom";
+
 const LEGAL = [
-  { title: "Privacy Policy", href: "#" },
-  { title: "Terms of Service", href: "#" },
-  { title: "About EDS", href: "#" },
+  { title: "Privacy Policy", href: "/privacy-policy" },
+  { title: "Terms of Service", href: "/terms-of-service" },
+  { title: "About EDS", href: "/about" },
 ];
 
 const SOCIAL = [
-  { title: "LinkedIn", href: "#" },
-  { title: "Instagram", href: "#" },
-  { title: "X / Twitter", href: "#" },
+  { title: "LinkedIn", href: "https://www.linkedin.com" },
+  { title: "Instagram", href: "https://www.instagram.com" },
+  { title: "X", href: "https://www.x.com" },
 ];
 
 const MARQUEE_SLOTS = ["a", "b", "c", "d", "e", "f"];
@@ -34,12 +36,12 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {LEGAL.map((item) => (
                 <li key={item.title}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     className="text-sm text-foreground hover:text-primary transition-colors"
                   >
                     {item.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -54,6 +56,7 @@ export default function Footer() {
                   <a
                     href={item.href}
                     className="text-sm text-foreground hover:text-primary transition-colors"
+                    target="_blank"
                   >
                     {item.title}
                   </a>

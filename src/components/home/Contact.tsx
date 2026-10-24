@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SignalLine from "@/components/ui/SignalLine";
@@ -8,11 +8,16 @@ import {
   TIMEZONES,
   contactSchema,
   formatUsPhoneInput,
-  parseUsPhone,
+  sendContactEmail,
+  isLikelyBot,
+  COMPANY_EMAIL,
 } from "@/utils/contact";
 
 export default function Contact() {
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const [startedAt] = useState(() => Date.now());
   const {
     register,
     handleSubmit,
@@ -34,21 +39,23 @@ export default function Contact() {
   });
   const messageLength = useWatch({ control, name: "message" }).length;
 
-  const onSubmit = (form: ContactForm) => {
-    const phone = parseUsPhone(form.phone)?.formatNational() ?? form.phone;
-    const subject = `New Strategy Call Request: ${form.full_name}`;
-    const body = [
-      `Full Name: ${form.full_name}`,
-      `Email: ${form.email}`,
-      `Phone: ${phone}`,
-      `Preferred Time Zone: ${form.timezone}`,
-      `Target Market: ${form.target_market}`,
-      `Monthly Lead Goal: ${form.monthly_goal}`,
-      `Current Bottleneck: ${form.bottleneck}`,
-      `Message: ${form.message}`,
-    ].join("\n");
-    window.location.href = `mailto:extradosesolutions@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+  const onSubmit = async (form: ContactForm) => {
+    setSubmitError(null);
+    // Quietly "succeed" for bots so they get no signal to retry.
+    if (isLikelyBot(honeypotRef.current?.value ?? "", startedAt)) {
+      setSent(true);
+      return;
+    }
+    try {
+      await sendContactEmail(form);
+      setSent(true);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while sending your request.",
+      );
+    }
   };
 
   const errorText = (key: keyof ContactForm) =>
@@ -138,6 +145,16 @@ export default function Contact() {
               className="space-y-5"
               noValidate
             >
+              {/* Spam trap: hidden from people, filled in by bots */}
+              <input
+                ref={honeypotRef}
+                type="text"
+                name="_honey"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="full_name" className={label}>
@@ -285,10 +302,26 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-full bg-primary px-8 py-4 text-sm font-medium uppercase tracking-widest text-primary-foreground transition-transform hover:scale-[1.01] disabled:opacity-60"
+                className="w-full rounded-full bg-primary px-8 py-4 text-sm font-medium uppercase tracking-widest text-primary-foreground transition-transform hover:scale-[1.01] disabled:opacity-60 disabled:hover:scale-100"
               >
-                Send Request
+                {isSubmitting ? "Sending…" : "Send Request"}
               </button>
+
+              {submitError && (
+                <p
+                  role="alert"
+                  className="rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+                >
+                  {submitError} You can also email us directly at{" "}
+                  <a
+                    href={`mailto:${COMPANY_EMAIL}`}
+                    className="underline underline-offset-2"
+                  >
+                    {COMPANY_EMAIL}
+                  </a>
+                  .
+                </p>
+              )}
             </form>
           )}
         </div>

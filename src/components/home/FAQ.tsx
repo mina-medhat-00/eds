@@ -33,7 +33,7 @@ const FAQS = [
 ];
 
 export default function FAQ() {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState<number>(0);
 
   return (
     <section

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Hero from "@/components/home/Hero";
 import Services from "@/components/home/Services";
 import Stats from "@/components/home/Stats";
@@ -10,6 +11,10 @@ import Contact from "@/components/home/Contact";
 import Footer from "@/components/home/Footer";
 
 export default function Home() {
+  useEffect(() => {
+    document.title = "Extra Dose Solutions";
+  }, []);
+
   return (
     <div className="relative bg-background">
       <Hero />

@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "@/pages/Home";
+import About from "@/pages/About";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import TermsOfService from "@/pages/TermsOfService";
 import PageNotFound from "@/pages/PageNotFound";
 
 function App() {
@@ -7,6 +10,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
