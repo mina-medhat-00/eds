@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
-import SignalLine from "@/components/home/SignalLine";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 const SERVICES = [
   {
-    id: "01",
+    id: 1,
     title: "Virtual Assistants",
     summary:
       "Cold calling, lead qualification, appointment setting, and daily admin support.",
@@ -12,7 +11,7 @@ const SERVICES = [
       "Trained callers fluent in real estate scripts. We dial your lists, qualify on your criteria, and book appointments directly into your calendar: consistent volume, every day.",
   },
   {
-    id: "02",
+    id: 2,
     title: "Acquisition Specialists",
     summary:
       "CRM management, follow-ups, negotiation support, and closing coordination.",
@@ -20,7 +19,7 @@ const SERVICES = [
       "Senior operators who run your pipeline end to end: CRM hygiene, multi-touch follow-up sequences, seller negotiation, and closing coordination with title and attorneys.",
   },
   {
-    id: "03",
+    id: 3,
     title: "Lead Management",
     summary:
       "Never miss a lead again. We build systems that keep your pipeline moving.",
@@ -28,7 +27,7 @@ const SERVICES = [
       "Custom lead routing, status workflows, and dispositions built around your CRM. Every contact is logged, scored, and moved to the right stage automatically.",
   },
   {
-    id: "04",
+    id: 4,
     title: "Custom Solutions",
     summary:
       "Flexible staffing and workflows designed around your business goals.",
@@ -38,7 +37,7 @@ const SERVICES = [
 ];
 
 export default function Services() {
-  const [open, setOpen] = useState("01");
+  const [open, setOpen] = useState<number>(1);
 
   return (
     <section
@@ -47,10 +46,10 @@ export default function Services() {
     >
       <div className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="font-mono-overlay text-xs uppercase tracking-[0.3em] text-primary">
-            // Our Services
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">
+            Services
           </p>
-          <h2 className="heading-tight mt-4 font-display text-5xl font-black uppercase text-foreground md:text-7xl">
+          <h2 className="heading-tight mt-4 font-display text-5xl font-semibold text-foreground md:text-7xl">
             Tailored Solutions
             <br />
             For Your Business
@@ -62,31 +61,29 @@ export default function Services() {
         </p>
       </div>
 
-      <SignalLine className="mb-2" />
-
       <div className="divide-y divide-border border-y border-border">
         {SERVICES.map((s) => {
           const active = open === s.id;
           return (
             <div key={s.id}>
               <button
-                onClick={() => setOpen(active ? "" : s.id)}
+                type="button"
+                onClick={() => {
+                  setOpen(active ? 0 : s.id);
+                }}
                 className="group flex w-full items-center gap-6 py-6 text-left transition-colors hover:text-primary"
               >
-                <span className="font-mono-overlay text-xs text-muted-foreground">
-                  {s.id}
-                </span>
-                <span className="heading-tight flex-1 font-display text-3xl font-black uppercase text-foreground transition-colors group-hover:text-primary md:text-5xl">
+                <span className="heading-tight flex-1 font-display text-3xl font-semibold text-foreground transition-colors group-hover:text-primary md:text-5xl">
                   {s.title}
                 </span>
                 <span className="hidden max-w-md text-sm text-muted-foreground md:block">
                   {s.summary}
                 </span>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-primary">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-primary cursor-pointer">
                   {active ? (
-                    <Minus className="h-4 w-4" />
+                    <ArrowUp className="h-4 w-4" />
                   ) : (
-                    <Plus className="h-4 w-4" />
+                    <ArrowDown className="h-4 w-4" />
                   )}
                 </span>
               </button>
@@ -95,17 +92,8 @@ export default function Services() {
                 style={{ gridTemplateRows: active ? "1fr" : "0fr" }}
               >
                 <div className="overflow-hidden">
-                  <div className="pb-8 pl-0 md:pl-16">
-                    <SignalLine className="mb-6 max-w-md" />
-                    <p className="max-w-2xl text-lg text-foreground">
-                      {s.detail}
-                    </p>
-                    <a
-                      href="#contact"
-                      className="mt-6 inline-flex font-mono-overlay text-xs uppercase tracking-widest text-primary hover:underline"
-                    >
-                      Learn More →
-                    </a>
+                  <div className="pb-8 pl-0">
+                    <p className="max-w-2xl text-foreground">{s.detail}</p>
                   </div>
                 </div>
               </div>

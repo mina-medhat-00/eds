@@ -1,4 +1,4 @@
-import SignalLine from "@/components/home/SignalLine";
+import SignalLine from "@/components/ui/SignalLine";
 
 const STATS = [
   { value: "50+", label: "Clients Served" },
@@ -14,10 +14,10 @@ export default function Stats() {
       <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-4">
         {STATS.map((s) => (
           <div key={s.label} className="bg-background p-8 text-center">
-            <div className="heading-tight font-display text-4xl font-black text-primary">
+            <div className="heading-tight font-display text-5xl font-semibold text-primary">
               {s.value}
             </div>
-            <div className="mt-3 font-mono-overlay text-[11px] uppercase tracking-widest text-muted-foreground">
+            <div className="mt-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">
               {s.label}
             </div>
           </div>

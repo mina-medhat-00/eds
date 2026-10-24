@@ -1,60 +1,41 @@
 import globals from "globals";
-import pluginJs from "@eslint/js";
-import pluginReact from "eslint-plugin-react";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginUnusedImports from "eslint-plugin-unused-imports";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
+import tseslint from "typescript-eslint";
+import { defineConfig, globalIgnores } from "eslint/config";
+import js from "@eslint/js";
 
-export default [
+export default defineConfig([
+  globalIgnores(["dist"]),
   {
-    files: [
-      "src/components/**/*.{js,mjs,cjs,jsx}",
-      "src/pages/**/*.{js,mjs,cjs,jsx}",
-      "src/Layout.jsx",
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+      reactX.configs["strict-type-checked"],
+      reactDom.configs.strict,
+      reactHooks.configs.flat["recommended-latest"],
+      reactRefresh.configs.vite,
     ],
-    ignores: ["src/lib/**/*", "src/components/ui/**/*"],
-    ...pluginJs.configs.recommended,
-    ...pluginReact.configs.flat.recommended,
     languageOptions: {
+      ecmaVersion: "latest",
       globals: globals.browser,
       parserOptions: {
-        ecmaVersion: 2022,
-        sourceType: "module",
-        ecmaFeatures: {
-          jsx: true,
-        },
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
-    plugins: {
-      react: pluginReact,
-      "react-hooks": pluginReactHooks,
-      "unused-imports": pluginUnusedImports,
-    },
-    rules: {
-      "no-unused-vars": "off",
-      "react/jsx-uses-vars": "error",
-      "react/jsx-uses-react": "error",
-      "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "warn",
-        {
-          vars: "all",
-          varsIgnorePattern: "^_",
-          args: "after-used",
-          argsIgnorePattern: "^_",
-        },
-      ],
-      "react/prop-types": "off",
-      "react/react-in-jsx-scope": "off",
-      "react/no-unknown-property": [
-        "error",
-        { ignore: ["cmdk-input-wrapper", "toast-close"] },
-      ],
-      "react-hooks/rules-of-hooks": "error",
     },
   },
-];
+  {
+    files: ["*.{js,cjs,mjs}"],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: globals.node },
+  },
+  {
+    files: ["tailwind.config.js"],
+    languageOptions: { sourceType: "commonjs" },
+  },
+]);

@@ -1,37 +1,46 @@
-import { useState, type FormEvent } from "react";
-import SignalLine from "@/components/home/SignalLine";
+import { useState, type ChangeEvent } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import SignalLine from "@/components/ui/SignalLine";
 import type { ContactForm } from "@/types";
-
-const TIMEZONES = [
-  "EST (Eastern Standard Time)",
-  "CST (Central Standard Time)",
-  "MST (Mountain Standard Time)",
-  "PST (Pacific Standard Time)",
-];
+import {
+  CONTACT_LIMITS,
+  TIMEZONES,
+  contactSchema,
+  formatUsPhoneInput,
+  parseUsPhone,
+} from "@/utils/contact";
 
 export default function Contact() {
-  const [form, setForm] = useState<ContactForm>({
-    full_name: "",
-    email: "",
-    phone: "",
-    timezone: "",
-    target_market: "",
-    monthly_goal: "",
-    bottleneck: "",
-    message: "",
-  });
   const [sent, setSent] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactForm>({
+    resolver: zodResolver(contactSchema),
+    mode: "onTouched",
+    defaultValues: {
+      full_name: "",
+      email: "",
+      phone: "",
+      timezone: "",
+      target_market: "",
+      monthly_goal: "",
+      bottleneck: "",
+      message: "",
+    },
+  });
+  const messageLength = useWatch({ control, name: "message" }).length;
 
-  const update = (key: keyof ContactForm, value: string) =>
-    setForm((current) => ({ ...current, [key]: value }));
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const subject = `New Strategy Call Request: ${form.full_name || "Unknown"}`;
+  const onSubmit = (form: ContactForm) => {
+    const phone = parseUsPhone(form.phone)?.formatNational() ?? form.phone;
+    const subject = `New Strategy Call Request: ${form.full_name}`;
     const body = [
       `Full Name: ${form.full_name}`,
       `Email: ${form.email}`,
-      `Phone: ${form.phone}`,
+      `Phone: ${phone}`,
       `Preferred Time Zone: ${form.timezone}`,
       `Target Market: ${form.target_market}`,
       `Monthly Lead Goal: ${form.monthly_goal}`,
@@ -42,10 +51,27 @@ export default function Contact() {
     setSent(true);
   };
 
+  const errorText = (key: keyof ContactForm) =>
+    errors[key] ? (
+      <p
+        id={`${key}-error`}
+        role="alert"
+        className="mt-1.5 text-sm text-destructive"
+      >
+        {errors[key].message}
+      </p>
+    ) : null;
+
+  const a11y = (key: keyof ContactForm) => ({
+    id: key,
+    "aria-invalid": errors[key] ? true : undefined,
+    "aria-describedby": errors[key] ? `${key}-error` : undefined,
+  });
+
   const field =
-    "w-full rounded-md border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors";
+    "w-full rounded-md border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors aria-invalid:border-destructive";
   const label =
-    "font-mono-overlay text-[11px] uppercase tracking-widest text-muted-foreground";
+    "text-sm font-medium uppercase tracking-widest text-muted-foreground";
 
   return (
     <section
@@ -54,10 +80,10 @@ export default function Contact() {
     >
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
         <div>
-          <p className="font-mono-overlay text-sm uppercase tracking-[0.3em] text-primary">
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">
             Contact
           </p>
-          <h2 className="heading-tight mt-4 font-display text-5xl font-black uppercase text-foreground md:text-7xl">
+          <h2 className="heading-tight mt-4 font-display text-5xl font-semibold text-foreground md:text-7xl">
             Book Your Free
             <br />
             Strategy Call
@@ -67,28 +93,38 @@ export default function Contact() {
             support system that keeps leads moving.
           </p>
           <SignalLine className="my-8 max-w-sm" />
-          <div className="space-y-3 font-mono-overlay text-sm">
-            <div className="flex items-center gap-3 text-foreground">
-              <span className="text-primary">✦</span>{" "}
+          <div className="space-y-1 text-sm">
+            <div className="flex items-center justify-start gap-2 text-foreground">
+              <span
+                aria-hidden="true"
+                className="h-2 w-2 shrink-0 rounded-full bg-primary"
+              />
               extradosesolutions@gmail.com
             </div>
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <span className="text-primary">✦</span> Schedule a 15-minute call
+            <div className="flex items-center justify-start gap-2 text-foreground">
+              <span
+                aria-hidden="true"
+                className="h-2 w-2 shrink-0 rounded-full bg-primary"
+              />
+              Schedule a 15-minute call
             </div>
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <span className="text-primary">✦</span> EST, CST, MST, and PST
-              coverage
+            <div className="flex items-center justify-start gap-2 text-foreground">
+              <span
+                aria-hidden="true"
+                className="h-2 w-2 shrink-0 rounded-full bg-primary"
+              />
+              EST, CST, MST, and PST coverage
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6 md:p-10">
+        <div className="rounded-3xl border border-border bg-card p-6 md:p-10">
           {sent ? (
             <div className="flex h-full min-h-100 flex-col items-center justify-center text-center">
-              <div className="font-mono-overlay text-sm uppercase tracking-widest text-primary">
+              <div className="text-sm font-medium uppercase tracking-widest text-primary">
                 Transmission Complete
               </div>
-              <h3 className="heading-tight mt-4 font-display text-3xl font-black uppercase text-foreground">
+              <h3 className="heading-tight mt-4 font-display text-3xl font-semibold text-foreground">
                 Request Received
               </h3>
               <p className="mt-4 max-w-sm text-muted-foreground">
@@ -97,52 +133,72 @@ export default function Contact() {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form
+              onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+              className="space-y-5"
+              noValidate
+            >
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
-                  <label className={label}>Full Name</label>
+                  <label htmlFor="full_name" className={label}>
+                    Full Name
+                  </label>
                   <input
                     type="text"
+                    autoComplete="name"
                     className={`${field} mt-2`}
-                    value={form.full_name}
-                    onChange={(e) => update("full_name", e.target.value)}
-                    maxLength={100}
-                    required
+                    maxLength={CONTACT_LIMITS.full_name.max}
+                    {...a11y("full_name")}
+                    {...register("full_name")}
                   />
+                  {errorText("full_name")}
                 </div>
 
                 <div>
-                  <label className={label}>Email</label>
+                  <label htmlFor="email" className={label}>
+                    Email
+                  </label>
                   <input
                     type="email"
+                    autoComplete="email"
                     className={`${field} mt-2`}
-                    value={form.email}
-                    onChange={(e) => update("email", e.target.value)}
-                    maxLength={254}
-                    required
+                    maxLength={CONTACT_LIMITS.email.max}
+                    {...a11y("email")}
+                    {...register("email")}
                   />
+                  {errorText("email")}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
-                  <label className={label}>Phone Number</label>
+                  <label htmlFor="phone" className={label}>
+                    Phone Number (US)
+                  </label>
                   <input
                     type="tel"
+                    inputMode="tel"
+                    autoComplete="tel-national"
+                    placeholder="(555) 123-4567"
                     className={`${field} mt-2`}
-                    value={form.phone}
-                    onChange={(e) => update("phone", e.target.value)}
                     maxLength={20}
-                    required
+                    {...a11y("phone")}
+                    {...register("phone", {
+                      onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                        e.target.value = formatUsPhoneInput(e.target.value);
+                      },
+                    })}
                   />
+                  {errorText("phone")}
                 </div>
                 <div>
-                  <label className={label}>Preferred Time Zone</label>
+                  <label htmlFor="timezone" className={label}>
+                    Preferred Time Zone
+                  </label>
                   <select
                     className={`${field} mt-2`}
-                    value={form.timezone}
-                    onChange={(e) => update("timezone", e.target.value)}
-                    required
+                    {...a11y("timezone")}
+                    {...register("timezone")}
                   >
                     <option value="" disabled>
                       Select Your Time Zone
@@ -153,58 +209,83 @@ export default function Contact() {
                       </option>
                     ))}
                   </select>
+                  {errorText("timezone")}
                 </div>
               </div>
 
               <div>
-                <label className={label}>Target Market?</label>
+                <label htmlFor="target_market" className={label}>
+                  Target Market?
+                </label>
                 <input
                   type="text"
                   placeholder="e.g. Dallas-Fort Worth wholesaling"
                   className={`${field} mt-2`}
-                  value={form.target_market}
-                  onChange={(e) => update("target_market", e.target.value)}
-                  maxLength={100}
+                  maxLength={CONTACT_LIMITS.target_market.max}
+                  {...a11y("target_market")}
+                  {...register("target_market")}
                 />
+                {errorText("target_market")}
               </div>
 
               <div>
-                <label className={label}>Monthly Lead Goal?</label>
+                <label htmlFor="monthly_goal" className={label}>
+                  Monthly Lead Goal?
+                </label>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="e.g. 60 qualified appointments"
                   className={`${field} mt-2`}
-                  value={form.monthly_goal}
-                  onChange={(e) => update("monthly_goal", e.target.value)}
-                  maxLength={10}
+                  maxLength={String(CONTACT_LIMITS.monthly_goal.max).length}
+                  {...a11y("monthly_goal")}
+                  {...register("monthly_goal", {
+                    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                      e.target.value = e.target.value.replace(/\D/g, "");
+                    },
+                  })}
                 />
+                {errorText("monthly_goal")}
               </div>
 
               <div>
-                <label className={label}>Current Bottleneck?</label>
+                <label htmlFor="bottleneck" className={label}>
+                  Current Bottleneck?
+                </label>
                 <input
+                  type="text"
                   placeholder="e.g. Slow follow-up, no callers, CRM mess"
                   className={`${field} mt-2`}
-                  value={form.bottleneck}
-                  onChange={(e) => update("bottleneck", e.target.value)}
-                  maxLength={100}
+                  maxLength={CONTACT_LIMITS.bottleneck.max}
+                  {...a11y("bottleneck")}
+                  {...register("bottleneck")}
                 />
+                {errorText("bottleneck")}
               </div>
 
               <div>
-                <label className={label}>Message</label>
+                <div className="flex items-baseline justify-between">
+                  <label htmlFor="message" className={label}>
+                    Message
+                  </label>
+                  <span className="text-sm text-muted-foreground">
+                    {messageLength}/{CONTACT_LIMITS.message.max}
+                  </span>
+                </div>
                 <textarea
                   rows={4}
                   className={`${field} mt-2 resize-none`}
-                  value={form.message}
-                  onChange={(e) => update("message", e.target.value)}
-                  maxLength={1000}
+                  maxLength={CONTACT_LIMITS.message.max}
+                  {...a11y("message")}
+                  {...register("message")}
                 />
+                {errorText("message")}
               </div>
 
               <button
                 type="submit"
-                className="w-full rounded-md bg-primary px-8 py-4 font-mono-overlay text-xs uppercase tracking-widest text-primary-foreground transition-transform hover:scale-[1.01]"
+                disabled={isSubmitting}
+                className="w-full rounded-full bg-primary px-8 py-4 text-sm font-medium uppercase tracking-widest text-primary-foreground transition-transform hover:scale-[1.01] disabled:opacity-60"
               >
                 Send Request
               </button>

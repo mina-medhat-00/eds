@@ -1,7 +1,13 @@
-import { TrendingUp } from "lucide-react";
-import SignalLine from "@/components/home/SignalLine";
+import SignalLine from "@/components/ui/SignalLine";
 
-const CASES = [
+const CASES: {
+  client: string;
+  market: string;
+  challenge: string;
+  results: string[];
+  metric: string;
+  metricLabel: string;
+}[] = [
   {
     client: "Wholesaling Team",
     market: "DFW, Texas",
@@ -51,10 +57,10 @@ export default function CaseStudies() {
     >
       <div className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="font-mono-overlay text-sm uppercase tracking-[0.3em] text-primary">
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">
             Case Studies
           </p>
-          <h2 className="heading-tight mt-4 font-display text-5xl font-black uppercase text-foreground md:text-7xl">
+          <h2 className="heading-tight mt-4 font-display text-5xl font-semibold text-foreground md:text-7xl">
             Outcomes That
             <br />
             Compounded
@@ -74,42 +80,49 @@ export default function CaseStudies() {
             className="group flex flex-col rounded-lg border border-border bg-card p-8 transition-colors hover:border-primary/50"
           >
             <div className="flex items-center justify-between">
-              <span className="font-mono-overlay text-[11px] uppercase tracking-widest text-muted-foreground">
+              <span className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
                 {c.market}
               </span>
-              <TrendingUp className="h-4 w-4 text-primary" />
             </div>
-            <h3 className="heading-tight mt-4 font-display text-2xl font-black uppercase text-foreground">
+            <h3 className="heading-tight mt-4 font-display text-2xl font-semibold text-foreground">
               {c.client}
             </h3>
             <SignalLine className="my-5" />
             <div>
-              <p className="font-mono-overlay text-[10px] uppercase tracking-widest text-primary">
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
                 The Challenge
               </p>
               <p className="mt-2 text-sm text-muted-foreground">
                 {c.challenge}
               </p>
             </div>
+
             <div className="mt-6">
-              <p className="font-mono-overlay text-[10px] uppercase tracking-widest text-primary">
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
                 The Results
               </p>
               <ul className="mt-3 space-y-2">
-                {c.results.map((r) => (
-                  <li key={r} className="flex gap-2 text-sm text-foreground">
-                    <span className="text-primary">▸</span>
-                    <span>{r}</span>
+                {c.results.map((result) => (
+                  <li
+                    key={result}
+                    className="flex gap-3 text-sm text-foreground"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary"
+                    />
+                    <span>{result}</span>
                   </li>
                 ))}
               </ul>
             </div>
+
             <div className="mt-auto pt-8">
               <SignalLine className="mb-4" />
-              <div className="heading-tight font-display text-4xl font-black text-primary">
+              <div className="heading-tight font-display text-4xl font-semibold text-primary">
                 {c.metric}
               </div>
-              <div className="mt-1 font-mono-overlay text-[10px] uppercase tracking-widest text-muted-foreground">
+              <div className="mt-1 text-sm font-medium uppercase tracking-widest text-muted-foreground">
                 {c.metricLabel}
               </div>
             </div>

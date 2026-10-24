@@ -1,5 +1,5 @@
 import { Zap, Target, Layers } from "lucide-react";
-import SignalLine from "@/components/home/SignalLine";
+import SignalLine from "@/components/ui/SignalLine";
 
 const REASONS = [
   {
@@ -26,10 +26,10 @@ export default function WhyUs() {
       className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
     >
       <div className="mb-16">
-        <p className="font-mono-overlay text-xs uppercase tracking-[0.3em] text-primary">
-          // Why EDS
+        <p className="text-sm font-medium uppercase tracking-widest text-primary">
+          Why EDS
         </p>
-        <h2 className="heading-tight mt-4 font-display text-5xl font-black uppercase text-foreground md:text-7xl">
+        <h2 className="heading-tight mt-4 font-display text-5xl font-semibold text-foreground md:text-7xl">
           Built For Real
           <br />
           Estate Speed
@@ -47,7 +47,7 @@ export default function WhyUs() {
             className="group bg-background p-10 transition-colors hover:bg-card"
           >
             <r.icon className="h-7 w-7 text-primary" />
-            <h3 className="heading-tight mt-6 font-display text-2xl font-black uppercase text-foreground">
+            <h3 className="heading-tight mt-6 font-display text-2xl font-semibold text-foreground">
               {r.title}
             </h3>
             <SignalLine className="my-5 max-w-30" />

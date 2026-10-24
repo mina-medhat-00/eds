@@ -1,4 +1,4 @@
-import SignalLine from "@/components/home/SignalLine";
+import SignalLine from "@/components/ui/SignalLine";
 
 const STEPS = [
   {
@@ -25,10 +25,10 @@ export default function Process() {
       className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
     >
       <div className="mb-16">
-        <p className="font-mono-overlay text-xs uppercase tracking-[0.3em] text-primary">
-          // Process
+        <p className="text-sm font-medium uppercase tracking-widest text-primary">
+          Process
         </p>
-        <h2 className="heading-tight mt-4 font-display text-5xl font-black uppercase text-foreground md:text-7xl">
+        <h2 className="heading-tight mt-4 font-display text-5xl font-semibold text-foreground md:text-7xl">
           How It Works
         </h2>
         <p className="mt-6 max-w-xl text-muted-foreground">
@@ -43,11 +43,11 @@ export default function Process() {
             key={s.n}
             className="relative rounded-lg border border-border bg-card p-8"
           >
-            <div className="heading-tight font-display text-6xl font-black text-foreground/10">
+            <div className="heading-tight font-display text-6xl font-semibold text-foreground">
               {s.n}
             </div>
             <SignalLine className="my-6" />
-            <h3 className="heading-tight font-display text-2xl font-black uppercase text-foreground">
+            <h3 className="heading-tight font-display text-2xl font-semibold text-foreground">
               {s.title}
             </h3>
             <p className="mt-4 text-muted-foreground">{s.body}</p>

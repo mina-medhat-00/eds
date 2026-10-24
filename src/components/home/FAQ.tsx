@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
-import SignalLine from "@/components/home/SignalLine";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 const FAQS = [
   {
@@ -42,10 +41,10 @@ export default function FAQ() {
       className="relative mx-auto max-w-350 px-6 py-24 md:px-16"
     >
       <div className="mb-16">
-        <p className="font-mono-overlay text-sm uppercase tracking-[0.3em] text-primary">
+        <p className="text-sm font-medium uppercase tracking-widest text-primary">
           FAQ
         </p>
-        <h2 className="heading-tight mt-4 font-display text-5xl font-black uppercase text-foreground md:text-7xl">
+        <h2 className="heading-tight mt-4 font-display text-5xl font-semibold text-foreground md:text-7xl">
           Frequently Asked
           <br />
           Questions
@@ -58,17 +57,20 @@ export default function FAQ() {
           return (
             <div key={f.q} className="border-b border-border">
               <button
-                onClick={() => setOpen(active ? -1 : i)}
-                className="group flex w-full items-center justify-between gap-6 py-6 text-left"
+                type="button"
+                onClick={() => {
+                  setOpen(active ? -1 : i);
+                }}
+                className="group flex w-full items-center justify-between gap-6 py-6 text-left cursor-pointer"
               >
-                <span className="heading-tight font-display text-xl font-bold text-foreground transition-colors group-hover:text-primary md:text-2xl">
+                <span className="heading-tight font-display text-xl font-semibold text-foreground transition-colors group-hover:text-primary md:text-2xl">
                   {f.q}
                 </span>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-primary">
+                <span className="flex h-9 w-9 shrink-0 bg-transparent items-center justify-center rounded-full text-primary">
                   {active ? (
-                    <Minus className="h-4 w-4" />
+                    <ArrowUp className="h-4 w-4" />
                   ) : (
-                    <Plus className="h-4 w-4" />
+                    <ArrowDown className="h-4 w-4" />
                   )}
                 </span>
               </button>
@@ -78,7 +80,6 @@ export default function FAQ() {
               >
                 <div className="overflow-hidden">
                   <div className="pb-8">
-                    <SignalLine className="mb-5 max-w-md" />
                     <p className="max-w-2xl text-muted-foreground">{f.a}</p>
                   </div>
                 </div>
